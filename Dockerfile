@@ -47,7 +47,6 @@ RUN mkdir -p                             ${CONFLUENCE_INSTALL_DIR} \
     && sed -i -e 's/UMASK="0027"/UMASK="0002"/' ${CONFLUENCE_INSTALL_DIR}/bin/catalina.sh \
     && dos2unix ${CONFLUENCE_INSTALL_DIR}/confluence/WEB-INF/classes/confluence-init.properties \
     && echo -e "\n" >> ${CONFLUENCE_INSTALL_DIR}/confluence/WEB-INF/classes/confluence-init.properties \
-    && cp -rf ${CONFLUENCE_INSTALL_DIR}/confluence/WEB-INF/confluence-cfg/confluence.cfg.xml ${CONFLUENCE_HOME} \
     && echo "confluence.home=${CONFLUENCE_HOME}/" >> ${CONFLUENCE_INSTALL_DIR}/confluence/WEB-INF/classes/confluence-init.properties 
     
 # Disable JMX: 
