@@ -49,6 +49,7 @@ if [ "${UID}" -eq 0 ]; then
 else
     echo "User is not root"
     echo "User is ${RUN_USER}"
+    cp -rf ${CONFLUENCE_INSTALL_DIR}/confluence/WEB-INF/confluence-cfg/confluence.cfg.xml ${CONFLUENCE_HOME}
     exec "$CONFLUENCE_INSTALL_DIR/bin/start-confluence.sh" "$@"
 fi
 
