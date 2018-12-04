@@ -11,7 +11,7 @@ ENV UID ${RUN_USER}
 #ENV https_proxy http://user:password@proxy.com:80
 
 # https://confluence.atlassian.com/doc/confluence-home-and-other-important-directories-590259707.html
-ENV CONFLUENCE_HOME          /var/atlassian/application-data/confluence/home
+ENV CONFLUENCE_HOME          /var/atlassian/application-data/confluence
 ENV CONFLUENCE_INSTALL_DIR   /opt/atlassian/confluence
 
 VOLUME ["${CONFLUENCE_HOME}"]
@@ -47,6 +47,7 @@ RUN mkdir -p                             ${CONFLUENCE_INSTALL_DIR} \
     && sed -i -e 's/UMASK="0027"/UMASK="0002"/' ${CONFLUENCE_INSTALL_DIR}/bin/catalina.sh \
     && dos2unix ${CONFLUENCE_INSTALL_DIR}/confluence/WEB-INF/classes/confluence-init.properties \
     && echo -e "\n" >> ${CONFLUENCE_INSTALL_DIR}/confluence/WEB-INF/classes/confluence-init.properties \
+    $$ cp -rf ${CONFLUENCE_INSTALL_DIR}/confluence/WEB-INF/confluence-cfg/confluence.cfg.xml ${CONFLUENCE_HOME}
     && echo "confluence.home=${CONFLUENCE_HOME}/" >> ${CONFLUENCE_INSTALL_DIR}/confluence/WEB-INF/classes/confluence-init.properties 
     
 # Disable JMX: 
