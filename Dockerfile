@@ -1,6 +1,8 @@
 # Dockerfile based on https://hub.docker.com/r/atlassian/confluence-server/~/dockerfile/
 FROM anapsix/alpine-java:8_jdk
 MAINTAINER Atlassian Confluence
+# RUN apk add xmlstarlet bash --update --repository http://dl-4.alpinelinux.org/alpine/edge/testing \
+# 	&& rm -rf /var/cache/apk/*
 
 ENV RUN_USER           1001
 ENV RUN_GROUP          root
@@ -27,7 +29,7 @@ ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["/entrypoint.sh", "-fg"]
 
 RUN apk update -qq \
-    && apk add ca-certificates wget curl openssh bash procps openssl perl ttf-dejavu tini \
+    && apk add ca-certificates wget curl openssh bash procps openssl perl ttf-dejavu tini xmlstarlet \
     && update-ca-certificates \
     && rm -rf /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/*
 
