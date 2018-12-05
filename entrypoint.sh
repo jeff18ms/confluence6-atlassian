@@ -1,5 +1,8 @@
 #!/bin/bash
-set -euo pipefail
+#set -euo pipefail
+set -o errexit
+
+[[ ${DEBUG} == true ]] && set -x
 
 # Setup Catalina Opts
 : ${CATALINA_CONNECTOR_PROXYNAME:=}
