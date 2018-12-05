@@ -15,6 +15,38 @@ CATALINA_OPTS="${CATALINA_OPTS} -DcatalinaConnectorScheme=${CATALINA_CONNECTOR_S
 CATALINA_OPTS="${CATALINA_OPTS} -DcatalinaConnectorSecure=${CATALINA_CONNECTOR_SECURE}"
 
 export CATALINA_OPTS
+#added new functions
+function setConfluenceConfigurationProperty() {
+  local configurationProperty=$1
+  local configurationValue=$2
+  if [ -n "${configurationProperty}" ]; then
+    local propertyCount=$(xmlstarlet sel -t -v "count(//property[@name='${configurationProperty}'])" ${CONFLUENCE_HOME}/confluence.cfg.xml)
+    if [ "${propertyCount}" = '0' ]; then
+      # Element does not exist, we insert new property
+      xmlstarlet ed --pf --inplace --subnode '//properties' --type elem --name 'property' --value "${configurationValue}" -i '//properties/property[not(@name)]' --type attr --name 'name' --value "${configurationProperty}" ${CONFLUENCE_HOME}/confluence.cfg.xml
+    else
+      # Element exists, we update the existing property
+      xmlstarlet ed --pf --inplace --update "//property[@name='${configurationProperty}']" --value "${configurationValue}" ${CONFLUENCE_HOME}/confluence.cfg.xml
+    fi
+  fi
+}
+
+function processConfluenceConfigurationSettings() {
+  local counter=1
+  if [ -f "${CONFLUENCE_HOME}/confluence.cfg.xml" ]; then
+    for (( counter=1; ; counter++ ))
+    do
+      VAR_CONFLUENCE_CONFIG_PROPERTY="CONFLUENCE_CONFIG_PROPERTY$counter"
+      VAR_CONFLUENCE_CONFIG_VALUE="CONFLUENCE_CONFIG_VALUE$counter"
+      if [ -z "${!VAR_CONFLUENCE_CONFIG_PROPERTY}" ]; then
+        break
+      fi
+      setConfluenceConfigurationProperty ${!VAR_CONFLUENCE_CONFIG_PROPERTY} ${!VAR_CONFLUENCE_CONFIG_VALUE}
+    done
+  fi
+}
+
+# end of new functions
 
 # Support Arbitrary User IDs (Reference: OpenShift Container Platform 3.9 Image Creation Guide):
 if ! whoami &> /dev/null; then
@@ -30,6 +62,8 @@ if ! whoami &> /dev/null; then
   fi
 fi
 # End of Support Arbitrary User IDs
+
+processConfluenceConfigurationSettings
 
 # Purge of confluence home:
 # https://confluence.atlassian.com/confkb/confluence-does-not-start-due-to-there-may-be-a-configuration-problem-in-your-confluence-cfg-xml-file-241568568.html
