@@ -29,7 +29,7 @@ ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["/entrypoint.sh", "-fg"]
 
 RUN apk update -qq \
-    && apk add ca-certificates wget curl openssh bash procps openssl perl ttf-dejavu tini xmlstarlet \
+    && apk add ca-certificates wget curl openssh bash procps openssl perl ttf-dejavu tini xmlstarlet gzip ghostscript graphviz motif msttcorefonts-installer tar \
     && update-ca-certificates \
     && rm -rf /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/*
 
