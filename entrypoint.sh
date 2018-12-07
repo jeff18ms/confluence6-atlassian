@@ -1,5 +1,4 @@
 #!/bin/bash
-#set -euo pipefail
 set -o errexit
 
 [[ ${DEBUG} == true ]] && set -x
@@ -71,8 +70,6 @@ processConfluenceConfigurationSettings
 # Purge of confluence home:
 # https://confluence.atlassian.com/confkb/confluence-does-not-start-due-to-there-may-be-a-configuration-problem-in-your-confluence-cfg-xml-file-241568568.html
 # rm -rf ${CONFLUENCE_HOME}/*
-# rm -rf ${CONFLUENCE_HOME}/confluence.cfg.xml
-# cp ${CONFLUENCE_INSTALL_DIR}/confluence/WEB-INF/confluence-cfg/confluence.cfg.xml ${CONFLUENCE_HOME}/confluence.cfg.xml
 # Start Confluence as the correct user
 if [ "${UID}" -eq 0 ]; then
     echo "User is currently root. Will change directory ownership to ${RUN_USER}:${RUN_GROUP}, then downgrade permission to ${RUN_USER}"
