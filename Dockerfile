@@ -15,7 +15,7 @@ ENV UID ${RUN_USER}
 # https://confluence.atlassian.com/doc/confluence-home-and-other-important-directories-590259707.html
 ENV CONFLUENCE_HOME          /var/atlassian/application-data/confluence
 ENV CONFLUENCE_INSTALL_DIR   /opt/atlassian/confluence
-ENV CATALINA_HOME /opt/atlassian/confluence
+#ENV CATALINA_HOME /opt/atlassian/confluence
 
 VOLUME ["${CONFLUENCE_HOME}"]
 
